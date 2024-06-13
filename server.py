@@ -19,6 +19,10 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 open_api_key = os.getenv('OPEN_API_KEY')
 client = openai.Client(api_key=open_api_key)
 
+@app.route('/')
+def home():
+    return jsonify({"message": "Server Service Running"})
+
 @app.route('/api/data', methods=['GET'])
 def get_data():
     return jsonify({"message": "This is the data from Flask."})
