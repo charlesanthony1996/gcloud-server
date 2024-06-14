@@ -42,7 +42,8 @@ def analyze_hate_speech():
         comment_text = data.get('text', '')  
         response_comment = comment_text if comment_text else "No comment received"
 
-        responseFromLLM = requests.post("http://openai_backend:6001/api/analyze_hate_speech", json={"text": response_comment})
+        # responseFromLLM = requests.post("http://openai_backend:6001/api/analyze_hate_speech", json={"text": response_comment})
+        responseFromLLM = requests.post("https://gcloud-server-hate-speech-met2pwr7xq-uc.a.run.app/api/analyze_hate_speech", json={"text": response_comment})
         analysis_result = responseFromLLM.json().get('analysis_result', '')
         return jsonify({"analysis_result": analysis_result})
 
@@ -57,7 +58,8 @@ def generate_counter_speech():
         comment_text = data.get('text', '')  
         response_comment = comment_text if comment_text else "No comment received"
 
-        responseFromLLM = requests.post("http://openai_backend:6001/api/generate_counter_speech", json={"text": response_comment})
+        # responseFromLLM = requests.post("http://openai_backend:6001/api/generate_counter_speech", json={"text": response_comment})
+        responseFromLLM = requests.post("https://gcloud-server-hate-speech-met2pwr7xq-uc.a.run.app/api/generate_counter_speech", json={"text": response_comment})
         counter_speech_result = responseFromLLM.json().get('counter_speech_result', '')
         return jsonify({"counter_speech_result": counter_speech_result})
 
