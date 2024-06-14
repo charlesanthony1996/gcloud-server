@@ -74,7 +74,8 @@ def explain_comment():
         comment_text = data.get('text', '')  
         response_comment = comment_text if comment_text else "No comment received"
 
-        explanationFromLLM = requests.post("http://openai_backend:6001/api/explain_hate_speech", json={"text": response_comment})
+        # explanationFromLLM = requests.post("http://openai_backend:6001/api/explain_hate_speech", json={"text": response_comment})
+        explanationFromLLM = requests.post("https://gcloud-server-hate-speech-met2pwr7xq-uc.a.run.app/api/explain_hate_speech", json={"text": response_comment})
         explanation_result = explanationFromLLM.json().get('explanation_result', '')
         return jsonify({"explanation_text": explanation_result})
 
@@ -92,7 +93,7 @@ def process_comments():
         filter_response = requests.post('http://filter:7001/api/test', json={'text': response_comment})
         response = filter_response.json().get('filtered_text')
         if response != "Is not HS":
-            filter_responseLLM = requests.post('http://openai_backend:6001/api/analyze_hate_speech', json={'text': response})
+            filter_responseLLM = requests.post('https://gcloud-server-hate-speech-met2pwr7xq-uc.a.run.app/api/analyze_hate_speech', json={'text': response})
             if filter_responseLLM.status_code == 200:
                 response = filter_responseLLM.json().get('llm_result')
                 return jsonify({"comment": response}), 200
