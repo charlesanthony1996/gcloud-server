@@ -91,16 +91,25 @@ def process_comments():
         response_comment = comment_text if comment_text else "No comment received"
         
         # filter_response = requests.post('http://filter:7001/api/test', json={'text': response_comment})
+        # filter_response = requests.post('http://localhost:7001/api/test', json={'text': response_comment})
         filter_response = requests.post('https://gcloud-filter-met2pwr7xq-uc.a.run.app/api/test', json={'text': response_comment})
         response = filter_response.json().get('filtered_text')
         if response != "Is not HS":
             # filter_responseLLM = requests.post('http://openai_backend:6001/api/analyze_hate_speech', json={'text': response})
+            # filter_responseLLM = requests.post('http://localhost:6001/api/analyze_hate_speech', json={'text': response})
             filter_responseLLM = requests.post('https://gcloud-server-hate-speech-met2pwr7xq-uc.a.run.app/api/analyze_hate_speech', json={'text': response})
             if filter_responseLLM.status_code == 200:
                 response = filter_responseLLM.json().get('llm_result')
-                return jsonify({"comment": response}), 200
+                response = jsonify({"comment": response})
+                response.status_code = 200
+                response.headers.add("Access-Control-Allow-Origin", "*") #important addition bc sometimes CORS fails
+                return response  
+            #explanation_responsLLM = requests.post('http://localhost:6001/api/explain_hate_speech', json={'text': comment_text})
         else:
-            return jsonify({"comment": "Is not HS" }), 200
+            response = jsonify({"comment": "Is not HS"})
+            response.status_code = 200
+            response.headers.add("Access-Control-Allow-Origin", "*") #important addition bc sometimes CORS fails
+            return response
         
     except Exception as e:
         print("Error during processing comments:", str(e))
