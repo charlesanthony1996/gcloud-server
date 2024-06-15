@@ -89,7 +89,9 @@ def process_comments():
         # filter_response = requests.post('http://filter:7001/api/test', json={'text': response_comment})
         # filter_response = requests.post('http://10.55.104.113:7001/api/test', json={'text': response_comment})
         # filter_response = requests.post('http://localhost:7001/api/test', json={'text': response_comment})
-        filter_response = requests.post('https://gcloud-filter-met2pwr7xq-uc.a.run.app/api/test', json={'text': response_comment})
+        # filter_response = requests.post('https://gcloud-filter-met2pwr7xq-uc.a.run.app/api/test', json={'text': response_comment})
+        filter_response = requests.post('https://gcloud-filter-met2pwr7xq-ey.a.run.app/api/test', json={'text': response_comment})
+        
 
         response = filter_response.json().get('filtered_text')
         if response != "Is not HS":
